@@ -29,6 +29,8 @@ def face_detect(image):
 			#~ for (ex,ey,ew,eh) in eyes:
 			#~ cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
 		print 'found face'
+		cv2.imwrite( "/var/www/tempFace/temp.jpg", image )
+		dd = input("enter...")
 		return True
 	else:
 		print 'NO face'
@@ -43,9 +45,9 @@ def face_detect(image):
 if __name__ == "__main__":
 	# initialize the camera and grab a reference to the raw camera capture
 	camera = PiCamera()
-	camera.resolution = (240, 120)
+	camera.resolution = (300, 200)
 	camera.framerate = 32
-	rawCapture = PiRGBArray(camera, size=(240, 120))
+	rawCapture = PiRGBArray(camera, size=(300, 200))
 
 	# allow the camera to warmup
 	time.sleep(3)
@@ -54,20 +56,20 @@ if __name__ == "__main__":
 	for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 		# grab the raw NumPy array representing the image, then initialize the timestamp
 		# and occupied/unoccupied text
-		start = time.time()
+		#start = time.time()
 		image = frame.array
 		
 		#print type(image)
 		#image2 = cv2.imdecode(data, 1)
 		#print image2
 		# show the frame
-		#cv2.imshow("Frame", image)
+		cv2.imshow("Frame", image)
 		key = cv2.waitKey(1) & 0xFF
 		face_detect(image)
 		# clear the stream in preparation for the next frame
 		rawCapture.truncate(0)
-		end = time.time()
-		print end - start
+		#end = time.time()
+		#print end - start
 		# if the `q` key was pressed, break from the loop
 		if key == ord("q"):
 			break
