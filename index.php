@@ -19,14 +19,13 @@
 	<div class="center-ver center-hor" data-place="down"><div class="user">mock</div><!-- <div class="dishwasher light">Vaatwasser is klaar!</div> --></div>
 	<div class="lower-third center-hor"><div class="compliment light"></div></div>
 	<div class="bottom center-hor"><div class="news medium"></div></div>
-	<div id="photo"></div>
-	<button id="test">click<button/>
+
 
 </div>
 
 <script src="js/jquery.js"></script>
-<script src="js/photobooth_min.js"></script>
 <script src="js/jquery.feedToJSON.js"></script>
+<script src="js/jquery-dateFormat.min.js"></script>
 <script src="js/ical_parser.js"></script>
 <script src="js/moment-with-langs.min.js"></script>
 <script src="js/config.js"></script>

@@ -92,15 +92,16 @@ jQuery(document).ready(function($) {
 	var compliment;
 	
 	//init the camera photo
-	$('#photo').photobooth().on("image", function (event, dataUrl) {
-        imageFile = dataURLtoBlob(dataUrl);
-        var size = imageFile.size;
-        //alert("Picture size: " + size);
-		if(size > 5000){
-			uploadImage(imageFile);
-		};
-        //$("#gallery").append('<img src="' + dataUrl + '" >');
-    });
+	//~ $('#photo').photobooth().on("image", function (event, dataUrl) {
+        //~ imageFile = dataURLtoBlob(dataUrl);
+        //~ //alert(dataUrl);
+        //~ var size = imageFile.size;
+        //~ //alert("Picture size: " + size);
+		//~ if(size > 5000){
+			//~ uploadImage(imageFile);
+		//~ };
+        //~ //$("#gallery").append('<img src="' + dataUrl + '" >');
+    //~ });
     
 	
 	
@@ -118,7 +119,7 @@ jQuery(document).ready(function($) {
 	// 	}
 	// });
 	
-		$('#test').click(function(){$('.trigger').click();});
+		//$('#test').click(function(){$('.trigger').click();});
 	
 	//(function checkCamera()
 	//{	
@@ -431,10 +432,12 @@ jQuery(document).ready(function($) {
 		$.feedToJson({
 			feed: feed,
 			success: function(data){
+				
 				news = [];
 				for (var i in data.item) {
 					var item = data.item[i];
-					news.push(item.title);
+					//debugger;
+					news.push($.format.date(item.pubDate.split(',')[1].split(' ')[4].slice(0,-3), "HH:mm")+' '+item.title);
 				}
 			}
 		});
@@ -446,7 +449,6 @@ jQuery(document).ready(function($) {
 	(function showNews() {
 		var newsItem = news[newsIndex];
 		$('.news').updateWithText(newsItem,2000);
-
 		newsIndex--;
 		if (newsIndex < 0) newsIndex = news.length - 1;
 		setTimeout(function() {
