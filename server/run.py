@@ -1,3 +1,4 @@
+import linecache
 from layer import EchoLayer
 from yowsup.layers.auth                        import YowAuthenticationProtocolLayer
 from yowsup.layers.protocol_messages           import YowMessagesProtocolLayer
@@ -11,8 +12,10 @@ from yowsup.layers import YowLayerEvent
 from yowsup.stacks import YowStack, YOWSUP_CORE_LAYERS
 from yowsup import env
 
+PASS = linecache.getline('/home/pi/yowsup/config', 4).split("=")[1]+"="
+PHONE = linecache.getline('/home/pi/yowsup/config', 3).split("=")[1].split("\n")[0]
 
-CREDENTIALS = ("972547789145", "0uU5MKbzolSfNYDep0bSO/q4Ubk=") # replace with your phone and password
+CREDENTIALS = (PHONE, PASS) # replace with your phone and password
 
 if __name__==  "__main__":
     layers = (
