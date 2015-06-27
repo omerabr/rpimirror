@@ -32,6 +32,8 @@ def get_images_and_labels(path,skip):
 		while (count < 10):
 			camera = PiCamera()
 			camera.resolution = (300, 200)
+			camera.preview_fullscreen=False 
+			camera.preview_window=(620, 320, 640, 480) 
 			camera.framerate = 32
 								
 			camera.start_preview()
