@@ -3,55 +3,48 @@ from picamera import PiCamera
 import time
 import numpy as np
 import cv2
+import io
+from PIL import Image
 
-def face_detect(image):
-	#print image
-	face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-	#eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
-	
-	#print image
-	#img = cv2.imread(image)
-	#img = cv2.imread('1.png')
-	if len(image)<1:
+
+def face_rec(stream):
+	if len(stream)<1:
 		print 'NO Found'
 		return False
-	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-	faces = face_cascade.detectMultiScale(gray, 1.3, 3)
-
-	#print len(faces)
+	#gray = cv2.cvtColor(stream, cv2.COLOR_BGR2GRAY)
+	image_to_predict = stream
+	predict_image_pil = cv2.cvtColor(image_to_predict, cv2.COLOR_BGR2GRAY)
+	#predict_image_pil = cv2.imread(image_to_predict, cv2.CV_LOAD_IMAGE_GRAYSCALE)
+	#predict_image_pil = Image.open(image_to_predict).convert('L')
+	predict_image = np.array(predict_image_pil, 'uint8')
+	#faces = face_cascade.detectMultiScale(predict_image)
+	faces = face_cascade.detectMultiScale(predict_image)
 	if len(faces) > 0:
-		#for (x,y,w,h) in faces:
-			#img2 = cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
-			#~ roi_gray = gray[y:y+h, x:x+w]
-			#~ roi_color = img[y:y+h, x:x+w]
-			#~ eyes = eye_cascade.detectMultiScale(roi_gray)
-			#~ for (ex,ey,ew,eh) in eyes:
-			#~ cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
 		print 'found face'
-		cv2.imwrite( "/var/www/tempFace/temp.jpg", image )
-		dd = input("enter...")
-		return True
-	else:
-		print 'NO face'
-		return False
-	#cv2.imshow('img',img)
-	#cv2.waitKey(0)
-	#cv2.destroyAllWindows()
-
-
+		for (x, y, w, h) in faces:
+			nbr_predicted, conf = recognizer.predict(predict_image[y: y + h, x: x + w])
+			print "{} is Correctly Recognized with confidence {}".format(nbr_predicted, conf)
 
 
 if __name__ == "__main__":
 	# initialize the camera and grab a reference to the raw camera capture
+	face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+	recognizer = cv2.createLBPHFaceRecognizer()
+	recognizer.load('/home/pi/tempRecognizer/train.xml')
+	
+
+
 	camera = PiCamera()
 	camera.resolution = (300, 200)
+	camera.preview_fullscreen=False 
+	camera.preview_window=(620, 320, 640, 480) 
 	camera.framerate = 32
 	rawCapture = PiRGBArray(camera, size=(300, 200))
 
 	# allow the camera to warmup
 	time.sleep(3)
 
+	camera.start_preview()
 	# capture frames from the camera
 	for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 		# grab the raw NumPy array representing the image, then initialize the timestamp
@@ -63,9 +56,12 @@ if __name__ == "__main__":
 		#image2 = cv2.imdecode(data, 1)
 		#print image2
 		# show the frame
-		cv2.imshow("Frame", image)
+		#cv2.imshow("Frame", image)
+		
+		#camera.preview()
 		key = cv2.waitKey(1) & 0xFF
-		face_detect(image)
+		#face_detect(image)
+		face_rec(image)
 		# clear the stream in preparation for the next frame
 		rawCapture.truncate(0)
 		#end = time.time()
