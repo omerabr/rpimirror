@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import linecache
 from layer import EchoLayer
 from yowsup.layers.auth                        import YowAuthenticationProtocolLayer

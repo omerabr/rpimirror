@@ -133,12 +133,13 @@ jQuery(document).ready(function($) {
 	//})();
 	(function checkVersion()
 	{
-		$.getJSON('githash.php', {}, function(json, textStatus) {
+		$.getJSON('test.php', {}, function(json, textStatus) {
 			if (json) {
-				if (json.gitHash != gitHash) {
-					window.location.reload();
-					window.location.href=window.location.href;
-				}
+				console.log(json);
+				//~ if (json.gitHash != gitHash) {
+					//~ window.location.reload();
+					//~ window.location.href=window.location.href;
+				//~ }
 			}
 		});
 		setTimeout(function() {

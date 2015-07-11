@@ -23,8 +23,13 @@ def face_rec(stream):
 		print 'found face'
 		for (x, y, w, h) in faces:
 			nbr_predicted, conf = recognizer.predict(predict_image[y: y + h, x: x + w])
+			if (nbr_predicted == 0):
+				nbr_predicted = "omer"
+			else:
+				if (nbr_predicted == 2):
+					nbr_predicted = "tzahit"
 			print "{} is Correctly Recognized with confidence {}".format(nbr_predicted, conf)
-
+			
 
 if __name__ == "__main__":
 	# initialize the camera and grab a reference to the raw camera capture
