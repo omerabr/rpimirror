@@ -24,13 +24,20 @@ class EchoLayer(YowInterfaceLayer):
 	def onTextMessage(self,messageProtocolEntity):
 		# just print info
 		chatfile = '/var/tmp/yowsup/chat.log'
-		
+		sendername = ""
+		if messageProtocolEntity.getFrom(False) == "972549950625":
+			sendername = "Omer"
+		else:
+			if messageProtocolEntity.getFrom(False) == "972544725106":
+				sendername = "Tzahit"
+			else:
+				sendername = "Stranger"
 		print("Echoing %s to %s" % (messageProtocolEntity.getBody(), messageProtocolEntity.getFrom(False)))
 		if not os.path.isfile(chatfile):
 			newfile=open(chatfile,'w')
 			newfile.close()
 		writechat=open(chatfile,'a')
-		writechat.write(messageProtocolEntity.getBody()+'\n')
+		writechat.write(sendername+": "+messageProtocolEntity.getBody()+'\n')
 		
 	def onMediaMessage(self, messageProtocolEntity):
 		# just print info
